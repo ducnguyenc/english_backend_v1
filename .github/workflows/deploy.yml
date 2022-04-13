@@ -10,8 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Login to Amazon ECR
-      id: login-ecr
+    - name: Checkout code
       uses: aws-actions/checkout@v2
 
     - name: Configure AWS credentials

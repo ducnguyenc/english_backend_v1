@@ -4,6 +4,7 @@ version: '3.8'
 services:
   db:
     image: mysql:8.0
+    platform: linux/amd64
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
@@ -19,7 +20,7 @@ services:
   app:
     build:
       context: ./
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.app
     volumes:
       - ./:/var/www/html
     working_dir: /var/www/html

@@ -30,8 +30,9 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY_APP: app
         ECR_REPOSITORY_NGINX: nginx
+        IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -f Dockerfile.app -t $ECR_REGISTRY/$ECR_REPOSITORY_APP .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY_APP
-        docker build -f Dockerfile.nginx -t $ECR_REGISTRY/$ECR_REPOSITORY_NGINX .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY_NGINX
+        docker build -f Dockerfile.app -t $ECR_REGISTRY/$ECR_REPOSITORY_APP:latest .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY_APP:latest
+        docker build -f Dockerfile.nginx -t $ECR_REGISTRY/$ECR_REPOSITORY_NGINX:latest .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY_NGINX:latest

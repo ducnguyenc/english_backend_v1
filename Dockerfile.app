@@ -1,4 +1,4 @@
-FROM php:8.1.0-fpm
+FROM --platform=linux/amd64 php:8.1.0-fpm
 
 RUN apt-get update -y
 RUN apt-get install -y
@@ -25,4 +25,6 @@ RUN apt-get install npm -y \
     && mkdir /.npm \
     && chown $UID:$GID /.npm -R
 
+COPY ./ /var/www/html
+RUN chmod -R 777 storage
 # CMD php artisan serve --host=0.0.0.0 --port=$PORT

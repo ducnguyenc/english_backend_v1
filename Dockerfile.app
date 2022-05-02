@@ -27,6 +27,6 @@ RUN apt-get install npm -y \
 
 COPY ./ /var/www/html
 RUN composer install
-RUN cp .env.example .env`
+RUN cp .env.example .env
 RUN chmod -R 777 storage
 # CMD php artisan serve --host=0.0.0.0 --port=$PORT

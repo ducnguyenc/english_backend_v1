@@ -18,5 +18,5 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function () {
-    echo 'test ok';
+    echo 'test ok2';
 });

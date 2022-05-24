@@ -14,7 +14,9 @@ return [
     */
 
     'defaults' => [
+        // default
         'guard' => 'web',
+        // 'guard' => 'auth0',
         'passwords' => 'users',
     ],
 
@@ -36,9 +38,20 @@ return [
     */
 
     'guards' => [
+        // default
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+        ],
+
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
+
+        'auth0' => [
+            'driver' => 'auth0',
+            'provider' => 'auth0',
         ],
     ],
 
@@ -65,10 +78,20 @@ return [
             'model' => App\Models\User::class,
         ],
 
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
+
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+
+        'auth0' => [
+            'driver' => 'auth0',
+            'repository' => \Auth0\Laravel\Auth\User\Repository::class
+        ],
     ],
 
     /*

@@ -42,7 +42,7 @@ class UserController extends Controller
 
         DB::beginTransaction();
         try {
-            User::create($validated);
+            $user = User::create($validated);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -55,10 +55,9 @@ class UserController extends Controller
 
         return response()->json([
             "status" => "success",
-            "data" => null,
+            "data" => $user,
         ]);
     }
-
 
     /**
      * Store a newly created resource in storage.

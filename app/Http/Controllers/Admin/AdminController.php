@@ -42,7 +42,7 @@ class AdminController extends Controller
 
         DB::beginTransaction();
         try {
-            Admin::create($validated);
+            $admin = Admin::create($validated);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -55,7 +55,7 @@ class AdminController extends Controller
 
         return response()->json([
             "status" => "success",
-            "data" => null,
+            "data" => $admin,
         ]);
     }
 

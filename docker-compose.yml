@@ -38,3 +38,12 @@ services:
       - ./docker/nginx_conf/default.conf:/etc/nginx/conf.d/default.conf
     ports:
       - '80:80'
+      
+  redis:
+    image: redis:alpine
+    ports:
+      - 6379:6379
+    command:
+      redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./docker/nginx_conf/redis.conf:/usr/local/etc/redis/redis.conf

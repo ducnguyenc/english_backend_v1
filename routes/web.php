@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,4 +20,8 @@ Route::get('/', function () {
 
 Route::get('/swagger', function () {
     return view('swagger');
+});
+
+Route::get('/test', function(){
+    Redis::set('a', '11');
 });

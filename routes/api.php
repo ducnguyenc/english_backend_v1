@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\OrderShipmentStatusUpdated;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,3 +22,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
+
+Route::get('/test', function(){
+    $params = request()->all();
+    $mesage = $params['user'] . ': ' . $params['message'];
+    OrderShipmentStatusUpdated::dispatch($mesage);
+});
+
+Route::get('/listen', function(){
+    return view('listen');
+});

@@ -1,7 +1,5 @@
 <?php
 
-use App\Events\OrderShipmentStatusUpdated;
-use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,12 +19,4 @@ Route::get('/', function () {
 
 Route::get('/swagger', function () {
     return view('swagger');
-});
-
-Route::get('/test', function(){
-    OrderShipmentStatusUpdated::dispatch('11');
-});
-
-Route::get('/listen', function(){
-    return view('listen');
 });

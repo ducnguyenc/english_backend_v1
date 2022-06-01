@@ -15,15 +15,19 @@ class OrderShipmentStatusUpdated implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $user;
+    public $message;
+    public $createdAt;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user, $message, $createdAt)
     {
         $this->user = $user;
+        $this->message = $message;
+        $this->createdAt = $createdAt;
     }
 
     /**

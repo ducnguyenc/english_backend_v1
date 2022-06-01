@@ -25,10 +25,8 @@ Route::post('/login', [UserController::class, 'login']);
 
 Route::get('/test', function(){
     $params = request()->all();
-    $mesage = $params['user'] . ': ' . $params['message'];
-    OrderShipmentStatusUpdated::dispatch($mesage);
-});
-
-Route::get('/listen', function(){
-    return view('listen');
+    $user = $params['user'];
+    $mesage = $params['message'];
+    $createAt = now()->format('Y-m-d H:m:s');
+    OrderShipmentStatusUpdated::dispatch($user, $mesage, $createAt);
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -26,14 +27,14 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'bail|required|string|max:255',
-            'email' => 'bail|required|email|max:255|unique:admins',
+            'email' => 'bail|required|email|max:255|unique:users',
             'password' => 'bail|required|string|min:8|max:255',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                "status" => 'fail',
-                "data" => $validator->errors(),
+                'status' => 'fail',
+                'data' => $validator->errors(),
             ], 401);
         }
 
@@ -48,14 +49,14 @@ class UserController extends Controller
             DB::rollBack();
             Log::error($e->getMessage());
             return response()->json([
-                "status" => 'error',
-                "data" => 'error server',
+                'status' => 'error',
+                'data' => 'error server',
             ], 500);
         }
 
         return response()->json([
-            "status" => "success",
-            "data" => $user,
+            'status' => 'success',
+            'data' => $user,
         ]);
     }
 
@@ -74,8 +75,8 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                "status" => 'fail',
-                "data" => $validator->errors(),
+                'status' => 'fail',
+                'data' => $validator->errors(),
             ], 401);
         }
 
@@ -85,19 +86,27 @@ class UserController extends Controller
             if ($request->hasSession()) {
                 $request->session()->regenerate();
             }
-            $token = $request->user()->createToken($request->email . '' . now());
+            $user = $request->user();
+            $token = $user->createToken($request->email . '' . now());
 
             return response()->json([
-                "status" => 'success',
-                "data" => [
-                    'token' => $token->plainTextToken
+                'status' => 'success',
+                'data' => [
+                    'user' => new UserResource($user),
+                    'token' => $token->plainTextToken,
                 ],
             ]);
         }
 
         return response()->json([
-            "status" => 'fail',
-            "message" => 'Wrong account or password',
-        ], 400);
+            'status' => 'fail',
+            'message' => 'Wrong account or password',
+        ], 500);
+    }
+
+    public function logout()
+    {
+        $user = Auth::user();
+        $user->tokens()->delete();
     }
 }

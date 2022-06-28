@@ -55,3 +55,41 @@ services:
     ports:
       - '${SOKETI_PORT:-6001}:6001'
       - '${SOKETI_METRICS_SERVER_PORT:-9601}:9601'
+
+  es01:
+    build:
+      context: ./
+      dockerfile: es.Dockerfile
+    image: irental_es7
+    container_name: sorabito-es01
+    environment:
+      - node.name=es01
+      - discovery.type=single-node
+      - cluster.name=es-docker-cluster
+      - bootstrap.memory_lock=true
+      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata01:/usr/share/elasticsearch/data
+    ports:
+      - '9200:9200'
+
+  kibana:
+    build:
+      context: ./
+      dockerfile: kibana.Dockerfile
+    image: irental_kibana7
+    container_name: sorabito-kibana
+    links:
+      - es01:elasticsearch
+    ports:
+      - '5601:5601'
+    depends_on:
+      - es01
+
+volumes:
+  esdata01:
+    driver: local

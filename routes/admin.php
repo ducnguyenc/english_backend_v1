@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\LoginController;
-use App\Http\Controllers\Admin\RegisterController;
+use App\Http\Controllers\Api\V1\Admin\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,8 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('user', function (Request $request) {
-    return $request->user();
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    Route::get('/', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::post('logout', [AdminController::class, 'logout']);
 });
 
 Route::post('register', [AdminController::class, 'register']);

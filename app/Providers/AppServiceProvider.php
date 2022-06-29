@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Services\AdminService;
+use App\Services\AdminServiceInterface;
+use App\Services\UserService;
+use App\Services\UserServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +17,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(UserServiceInterface::class, UserService::class);
+
+        $this->app->singleton(AdminServiceInterface::class, AdminService::class);
     }
 
     /**
@@ -23,6 +29,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
     }
 }

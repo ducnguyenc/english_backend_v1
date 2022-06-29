@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         // default
-        'guard' => 'web',
+        'guard' => 'user',
         // 'guard' => 'auth0',
         'passwords' => 'users',
     ],
@@ -39,7 +39,7 @@ return [
 
     'guards' => [
         // default
-        'web' => [
+        'user' => [
             'driver' => 'session',
             'provider' => 'users',
         ],

@@ -13,9 +13,22 @@ services:
       MYSQL_USER: test
       MYSQL_PASSWORD: test
     ports:
-      - 3307:3306
+      - 3306:3306
     volumes:
       - ./mysql-data:/var/lib/mysql
+      # - ./docker/mysql/my-custom.cnf:/etc/mysql/conf.d/my-custom.cnf
+
+  # db:
+  #   image: postgres
+  #   restart: always
+  #   environment:
+  #     - POSTGRES_DB=test
+  #     - POSTGRES_USER=test
+  #     - POSTGRES_PASSWORD=test
+  #   ports:
+  #     - 5432:5432
+  #   volumes: 
+  #     - ./postgres-data:/var/lib/postgresql
 
   app:
     build:

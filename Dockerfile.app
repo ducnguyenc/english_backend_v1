@@ -5,8 +5,8 @@ RUN apt-get install -y
 RUN apt-get install -y \
     libzip-dev unzip libonig-dev libpng-dev \
     libwebp-dev libjpeg62-turbo-dev libxpm-dev \
-    libfreetype6-dev
-RUN docker-php-ext-install pdo pdo_mysql zip mbstring
+    libfreetype6-dev libpq-dev
+RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql zip mbstring 
 
 # config and install php gd
 RUN docker-php-ext-configure gd \

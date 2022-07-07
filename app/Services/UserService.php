@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\UserResource;
 use App\Repositories\UserRepositoryInterface;
 use App\Services\UserServiceInterface;
 use Illuminate\Http\Response;
@@ -15,7 +16,8 @@ class UserService extends BaseService implements UserServiceInterface
 {
     private $userRepositoryInterface;
 
-    public function __construct(UserRepositoryInterface $userRepositoryInterface) {
+    public function __construct(UserRepositoryInterface $userRepositoryInterface)
+    {
         $this->userRepositoryInterface = $userRepositoryInterface;
     }
 
@@ -56,7 +58,7 @@ class UserService extends BaseService implements UserServiceInterface
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e->getMessage());
-            
+
             return [$this->responseError('error server'), Response::HTTP_INTERNAL_SERVER_ERROR];
         }
 
@@ -83,9 +85,13 @@ class UserService extends BaseService implements UserServiceInterface
         $validated = $data->validated();
 
         if (Auth::guard('user')->attempt($validated)) {
-            $accessToken = Auth::guard('user')->user()->createToken($validated['email'] . '' . now())->plainTextToken;
+            $user = Auth::guard('user')->user();
+            $accessToken = $user->createToken($validated['email'] . '' . now())->plainTextToken;
 
-            return [$this->responseSuccess($accessToken), Response::HTTP_OK];
+            return [$this->responseSuccess([
+                'user' => new UserResource($user),
+                'access_token' => $accessToken,
+            ]), Response::HTTP_OK];
         }
 
         $data = ['error' => 'Wrong account or password'];
@@ -98,7 +104,7 @@ class UserService extends BaseService implements UserServiceInterface
             request()->user()->tokens()->delete();
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            
+
             return [$this->responseError('error server'), Response::HTTP_INTERNAL_SERVER_ERROR];
         }
 

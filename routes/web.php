@@ -1,7 +1,7 @@
 <?php
 
 use App\Events\OrderShipmentStatusUpdated;
-use Illuminate\Support\Facades\Redis;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,10 +23,14 @@ Route::get('/swagger', function () {
     return view('swagger');
 });
 
-Route::get('/test', function(){
+Route::get('/test', function () {
     OrderShipmentStatusUpdated::dispatch('11');
 });
 
-Route::get('/listen', function(){
+Route::get('/listen', function () {
     return view('listen');
+});
+
+Route::get('e', function () {
+    dd(User::search('example.com')->count());
 });
